@@ -17,9 +17,10 @@ class AVL{
     private:
         Node<T> *root;
         int height(Node<T> *N);
-        Node add(Node<T> *node, T* dado);
+        Node<T> *add(Node<T> *node, T* dado, Pessoa *pessoa);
         Node<T> *rotacaoDireita(Node<T> *y);
         Node<T> *rotacaoEsquerda(Node<T> *x);
         int balance(Node<T> *N);
-
+    public:
+        void add(T* dado, Pessoa *pessoa);
 };
