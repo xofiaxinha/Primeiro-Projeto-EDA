@@ -69,3 +69,15 @@ Node<T>* AVL<T>:: add(Node<T> *node, T* dado, Pessoa *pessoa){
     }
     return node;
 }
+template<typename T>
+void AVL<T>::preOrder(){
+    preOrder(root);
+}
+template<typename T>
+void AVL<T>::preOrder(Node<T> *node){
+    if(node != NULL){
+        cout << *(node->dado) << " ";
+        preOrder(node->left);
+        preOrder(node->right);
+    }
+}

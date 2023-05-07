@@ -15,6 +15,35 @@ struct data{
         mes = std::stoi(data.substr(0,2));
         ano = std::stoi(data.substr(6,4));
     }//data no formato mm/dd/aaaa
+    //sobrecarga do operador <
+    bool operator<(const data& d){
+        if(this->ano < d.ano){
+            return true;
+        }else if(this->ano == d.ano){
+            if(this->mes < d.mes){
+                return true;
+            }else if(this->mes == d.mes){
+                if(this->dia < d.dia){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    bool operator>(const data& d){
+        if(this->ano > d.ano){
+            return true;
+        }else if(this->ano == d.ano){
+            if(this->mes > d.mes){
+                return true;
+            }else if(this->mes == d.mes){
+                if(this->dia > d.dia){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 };
 
 class Pessoa{
