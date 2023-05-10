@@ -1,3 +1,6 @@
+#ifndef PESSOA_H
+#define PESSOA_H
+#pragma once
 #include <iostream>
 #include <string>
 struct data{
@@ -60,11 +63,4 @@ class Pessoa{
         std::string getSobrenome();
         struct data getDataNascimento();
 };
-
-Pessoa::Pessoa(long int CPF, std::string nome, std::string sobrenome, std::string dataNascimento){
-    this->CPF = CPF;
-    this->nome = nome;
-    this->sobrenome = sobrenome;
-    this->dataNascimento = data(dataNascimento);
-}
-Pessoa::~Pessoa(){}
+#endif
