@@ -3,6 +3,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <iomanip>
 struct data{
     int dia;
     int mes;
@@ -20,7 +21,7 @@ struct data{
     }//data no formato mm/dd/aaaa
     //sobrecarga do operador <
     bool operator<(const data& d){
-        if(this->ano < d.ano){
+        if(this->ano > d.ano){
             return true;
         }else if(this->ano == d.ano){
             if(this->mes < d.mes){
@@ -34,7 +35,7 @@ struct data{
         return false;
     }
     bool operator>(const data& d){
-        if(this->ano > d.ano){
+        if(this->ano < d.ano){
             return true;
         }else if(this->ano == d.ano){
             if(this->mes > d.mes){
@@ -46,6 +47,10 @@ struct data{
             }
         }
         return false;
+    }
+    friend std::ostream& operator<<(std::ostream& os, const data& d){
+        os << std::setfill('0') << std::setw(2) << d.mes << "/" << std::setfill('0') << std::setw(2) << d.dia << "/" << d.ano;
+        return os;
     }
 };
 

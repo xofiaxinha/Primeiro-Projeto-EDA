@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cstdlib>
 #include "AVL.h"
 
 using namespace std;
@@ -38,34 +39,32 @@ int AVL<T>::balance(struct Node<T> *N){
     return height(N->left) - height(N->right);
 }
 template<typename T>
-void AVL<T>::preOrder(){
-    preOrder(root);
-}
-template<typename T>
-void AVL<T>::preOrder(struct Node<T> *node){
-    if(node != NULL){
-        cout << *(node->dado) << " ";
-        preOrder(node->left);
-        preOrder(node->right);
-    }
-}
-template<typename T>
 struct Node<T> *AVL<T>::add(struct Node<T> *node, T* dado, Pessoa *pessoa){
+    //T data = *dado;
     if(node == NULL){
         struct Node<T> *newNode = new Node<T>(dado, pessoa);
         return newNode;
     }
-    if(*dado < *(node->dado)){
+    if(*(dado) < *(node->dado)){
         node->left = add(node->left, dado, pessoa);
     }
-    else if(*dado > *(node->dado)){
+    else if(*(dado) > *(node->dado)){
         node->right = add(node->right, dado, pessoa);
     }
     else{
-        return node;
+        return repeatedNode(node, pessoa);
     }
     
     return fixup(node);
+}
+
+//função que recebe o nó que é igual ao valor a ser inserido e insere o valor na lista de pessoas
+template<typename T>
+struct Node<T> repeatedNode(struct Node<T> *node, Pessoa *pessoa){
+    node->pessoa = (Pessoa*)realloc(pessoa, sizeof(Pessoa) * (node->numPessoas + 1));
+    node->numPessoas += 1;
+    node->pessoa[node->numPessoas - 1] = *(pessoa);
+    return node;
 }
 template<typename T>
 void AVL<T>:: add(T* dado, Pessoa *pessoa){
@@ -75,6 +74,9 @@ template<typename T>
 struct Node<T> *AVL<T>::fixup(struct Node<T> *node){
     node->height = 1 + max(height(node->left), height(node->right));
     int balanceamento = balance(node);
+    if((balanceamento > -2 && balanceamento < 2) || node == NULL){
+        return node;
+    }
     if(balanceamento > 1 && *(node->dado) < *(node->left->dado)){
         return rotacaoDireita(node);
     }
@@ -91,25 +93,34 @@ struct Node<T> *AVL<T>::fixup(struct Node<T> *node){
     }
     return node;
 }
+
+vector<Pessoa> pessoa2vec(int n){
+    vector<Pessoa> v;
+    for(int i = 0; i < n; i++){
+        cout << "Digite o CPF: ";
+        long int cpf;
+        cin >> cpf;
+        cin.ignore();
+        cout << "Digite o nome e o sobrenome separados por enter: ";
+        string nome;
+        getline(cin, nome);
+        string sobrenome;
+        getline(cin, sobrenome);
+        cout << "Digite a data de nascimento (mm/dd/aaaa): ";
+        string dataNascimento;
+        getline(cin, dataNascimento);
+        Pessoa fulano(cpf, nome, sobrenome, dataNascimento);
+        v.push_back(fulano);
+    }
+    return v;
+}
 //a função recebe as árvores a serem preenchidas
 void vec2tree(vector<Pessoa> v, AVL<long int> *CPF, AVL<string> *nome, AVL<struct data> *dataNascimento){
-    string nomeCompleto;
+    /*/*, AVL<string> *nome, AVL<struct data> *dataNascimento*/
     long int cpf;
-    struct data dataNasc;
 
-    //árvore de nomes:
-    for(int i = 0; i < v.size(); i++){
-        nomeCompleto = v[i].getNome() + " " + v[i].getSobrenome();
-        nome->add(&nomeCompleto, &v[i]);
-    }
-    //árvore de cpfs:
-    for(int i = 0; i < v.size(); i++){
+    for(int i=0; i<(int)v.size(); i++){
         cpf = v[i].getCPF();
         CPF->add(&cpf, &v[i]);
-    }
-    //árvore de datas de nascimento:
-    for(int i = 0; i < v.size(); i++){
-        dataNasc = v[i].getDataNascimento();
-        dataNascimento->add(&dataNasc, &v[i]);
     }
 }

@@ -5,28 +5,31 @@
 using namespace std;
 
 int main(){
-    long int cpf;
-    string nome, sobrenome, dataNascimento;
-    vector<Pessoa> v;
-    
-    AVL<long int> CPF;
-    AVL<string> nomeCompleto;
-    AVL<struct data> dataNasc;
+    cout << "Testes \n";
 
-    for(int i=0; i<10; i++){
-        cout << "CPF: ";
-        cin >> cpf;
-        cout << "Nome: ";
-        cin >> nome;
-        cout << "Sobrenome: ";
-        cin >> sobrenome;
-        cout << "Data de nascimento (mm/dd/aaaa): ";
-        cin >> dataNascimento;
-        cout << endl;
-        Pessoa p(cpf, nome, sobrenome, dataNascimento);
-        v.push_back(p);
-    }
-    vec2tree(v, &CPF, &nomeCompleto, &dataNasc);
-    cout << "Arvore organizada pelo CPF:\n";
-    CPF.preOrder();
+    cout << "Node de exemplo:\n";
+    cout << "Digite o CPF: ";
+    long int cpf;
+    cin >> cpf;
+    cin.ignore();
+    cout << "Digite o nome e o sobrenome separados por enter: ";
+    string nome;
+    getline(cin, nome);
+    string sobrenome;
+    getline(cin, sobrenome);
+    cout << "Digite a data de nascimento (mm/dd/aaaa): ";
+    string dataNascimento;
+    getline(cin, dataNascimento);
+    Pessoa fulano(cpf, nome, sobrenome, dataNascimento);
+    Node<long int> *node = new Node<long int>(&cpf, &fulano);
+
+    cout << "CPF: " << *(node->dado) << endl;
+    cout << "Nome: " << node->pessoa->getNome() << endl;
+    cout << "Data de nascimento: " << node->pessoa->getDataNascimento() << endl;
+
+    cout << "AVL de exemplo:\n";
+    AVL<long int> *CPF = new AVL<long int>();
+    AVL<string> *Nome = new AVL<string>();
+    AVL<struct data> *DataNascimento = new AVL<struct data>();
+    
 }
