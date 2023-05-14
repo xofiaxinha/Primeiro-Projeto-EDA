@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include "AVL.h"
+#include "func.h"
 using namespace std;
 
 int main(){
@@ -9,7 +10,7 @@ int main(){
 
     cout << "Node de exemplo:\n";
     cout << "Digite o CPF: ";
-    long int cpf;
+    unsigned long int cpf;
     cin >> cpf;
     cin.ignore();
     cout << "Digite o nome e o sobrenome separados por enter: ";
@@ -21,15 +22,24 @@ int main(){
     string dataNascimento;
     getline(cin, dataNascimento);
     Pessoa fulano(cpf, nome, sobrenome, dataNascimento);
-    Node<long int> *node = new Node<long int>(&cpf, &fulano);
+    Node<unsigned long int> *node = new Node<unsigned long int>(&cpf, &fulano);
 
     cout << "CPF: " << *(node->dado) << endl;
     cout << "Nome: " << node->pessoa->getNome() << endl;
     cout << "Data de nascimento: " << node->pessoa->getDataNascimento() << endl;
 
     cout << "AVL de exemplo:\n";
-    AVL<long int> *CPF = new AVL<long int>();
+    AVL<unsigned long int> *CPF = new AVL<unsigned long int>();
     AVL<string> *Nome = new AVL<string>();
     AVL<struct data> *DataNascimento = new AVL<struct data>();
-    
+
+    vec2tree(pessoa2vec(2), CPF, Nome, DataNascimento);
+
+    cout << "Preordem das árvores:\n\n"
+         << "CPF:\n";
+        CPF->preOrder();
+    cout << "\nNome:\n";
+        Nome->preOrder();
+    cout << "\nData de nascimento:\n";
+        DataNascimento->preOrder();
 }

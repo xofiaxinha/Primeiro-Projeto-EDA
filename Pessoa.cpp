@@ -2,14 +2,14 @@
 #include <string>
 #include <iostream>
 
-Pessoa::Pessoa(long int CPF, std::string nome, std::string sobrenome, std::string dataNascimento){
+Pessoa::Pessoa(unsigned long int CPF, std::string nome, std::string sobrenome, std::string dataNascimento){
     this->CPF = CPF;
     this->nome = nome;
     this->sobrenome = sobrenome;
     this->dataNascimento = data(dataNascimento);
 }
 Pessoa::~Pessoa(){}
-long int Pessoa::getCPF(){
+unsigned long int Pessoa::getCPF(){
     return this->CPF;
 }
 std::string Pessoa::getNome(){

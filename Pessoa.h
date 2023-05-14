@@ -21,7 +21,7 @@ struct data{
     }//data no formato mm/dd/aaaa
     //sobrecarga do operador <
     bool operator<(const data& d){
-        if(this->ano > d.ano){
+        if(this->ano < d.ano){
             return true;
         }else if(this->ano == d.ano){
             if(this->mes < d.mes){
@@ -35,7 +35,7 @@ struct data{
         return false;
     }
     bool operator>(const data& d){
-        if(this->ano < d.ano){
+        if(this->ano > d.ano){
             return true;
         }else if(this->ano == d.ano){
             if(this->mes > d.mes){
@@ -56,14 +56,14 @@ struct data{
 
 class Pessoa{
     private:
-        long int CPF;
+        unsigned long int CPF;
         std::string nome;
         std::string sobrenome;
         struct data dataNascimento;
     public:
-        Pessoa(long int CPF, std::string nome, std::string sobrenome, std::string dataNascimento);
+        Pessoa(unsigned long int CPF, std::string nome, std::string sobrenome, std::string dataNascimento);
         ~Pessoa();
-        long int getCPF();
+        unsigned long int getCPF();
         std::string getNome();
         std::string getSobrenome();
         struct data getDataNascimento();
