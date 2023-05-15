@@ -4,62 +4,9 @@
 #include <cstdlib>
 #include <algorithm>
 #include "AVL.h"
-#include "func.h"
 
 using namespace std;
 
-template<typename T>
-int AVL<T>::height(struct Node<T> *N){
-    if (N == nullptr)
-        return 0;
-    return N->height;
-}
-template<typename T>
-struct Node<T> *AVL<T>::rotacaoDireita(struct Node<T> *y){
-    struct Node<T> *x = y->left;
-    struct Node<T> *T2 = x->right;
-    x->right = y;
-    y->left = T2;
-    y->height = max(height(y->left), height(y->right))+1;
-    x->height = max(height(x->left), height(x->right))+1;
-    return x;
-}
-template<typename T>
-struct Node<T> *AVL<T>::rotacaoEsquerda(struct Node<T> *x){
-    struct Node<T> *y = x->right;
-    struct Node<T> *T2 = y->left;
-    y->left = x;
-    x->right = T2;
-    x->height = max(height(x->left), height(x->right))+1;
-    y->height = max(height(y->left), height(y->right))+1;
-    return y;
-}
-template<typename T>
-int AVL<T>::balance(struct Node<T> *N){
-    if (N == nullptr)
-        return 0;
-    return height(N->left) - height(N->right);
-}
-template<typename T>
-struct Node<T> *AVL<T>::add(Node<T> *node, T* dado, Pessoa *pessoa){
-    //T data = *dado;
-    if(node == nullptr){
-        return = new Node<T>(dado, pessoa);
-    }
-    if(*(dado) < *(node->dado)){
-        node->left = add(node->left, dado, pessoa);
-    }
-    else if(*(dado) > *(node->dado)){
-        node->right = add(node->right, dado, pessoa);
-    }
-    else{
-        return repeatedNode(node, pessoa);
-    }
-    
-    return fixup(node);
-}
-
-//função que recebe o nó que é igual ao valor a ser inserido e insere o valor na lista de pessoas
 template<typename T>
 struct Node<T> *repeatedNode(struct Node<T> *node, Pessoa *pessoa){
     node->pessoa = (Pessoa*)realloc(pessoa, sizeof(Pessoa) * (node->numPessoas + 1));
@@ -67,34 +14,6 @@ struct Node<T> *repeatedNode(struct Node<T> *node, Pessoa *pessoa){
     node->pessoa[node->numPessoas - 1] = *(pessoa);
     return node;
 }
-template<typename T>
-void AVL<T>:: add(T* dado, Pessoa *pessoa){
-    root = add(root, dado, pessoa);
-}
-template<typename T>
-struct Node<T> *AVL<T>::fixup(struct Node<T> *node){
-    node->height = 1 + max(height(node->left), height(node->right));
-    int bal = balance(node);
-    if(bal >= -1 && bal <= 1){
-        return node;
-    }
-    if(bal < -1){
-        if(*(node->dado)<*(node->left->dado)) node = rotacaoDireita(node);
-        else{
-            node->left = rotacaoEsquerda(node->left);
-            node = rotacaoDireita(node);
-        }
-    }
-    else{
-        if(*(node->dado)>*(node->right->dado)) node = rotacaoEsquerda(node);
-        else{
-            node->right = rotacaoDireita(node->right);
-            node = rotacaoEsquerda(node);
-        }
-    }
-    return node;
-}
-
 vector<Pessoa> pessoa2vec(int n){
     vector<Pessoa> v;
     for(int i = 0; i < n; i++){
