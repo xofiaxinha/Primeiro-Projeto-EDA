@@ -68,4 +68,31 @@ class Pessoa{
         std::string getSobrenome();
         struct data getDataNascimento();
 };
+
+template<typename T>
+struct Node{
+    T dado;
+    Node* left;
+    Node* right;
+    int height;
+    int numPessoas;
+    Pessoa *pessoa; //ponteiro para o objeto que terá os dados da pessoa que possuir
+                    //os dados que serão inseridos na árvore
+    Node(){
+        //dado = nullptr;
+        left = nullptr;
+        right = nullptr;
+        height = 0;
+        pessoa = nullptr;
+        numPessoas = 0;
+    }
+    Node(T dado, Pessoa *pessoa){
+        this->dado = dado;
+        this->pessoa = pessoa;
+        left = nullptr;
+        right = nullptr;
+        height = 1;
+        numPessoas = 1;
+    }
+};
 #endif

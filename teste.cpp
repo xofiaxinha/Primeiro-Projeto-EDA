@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 #include "AVL.h"
-#include "func.h"
 using namespace std;
 
 int main(){
@@ -22,16 +21,17 @@ int main(){
     string dataNascimento;
     getline(cin, dataNascimento);
     Pessoa fulano(cpf, nome, sobrenome, dataNascimento);
-    Node<unsigned long int> *node = new Node<unsigned long int>(&cpf, &fulano);
+    Node<unsigned long int> *node = new Node<unsigned long int>(cpf, &fulano);
 
-    cout << "CPF: " << *(node->dado) << endl;
+    cout << "CPF: " << node->dado << endl;
     cout << "Nome: " << node->pessoa->getNome() << endl;
     cout << "Data de nascimento: " << node->pessoa->getDataNascimento() << endl;
 
     cout << "AVL de exemplo:\n";
-    AVL<unsigned long int> *CPF = new AVL<unsigned long int>();
-    AVL<string> *Nome = new AVL<string>();
-    AVL<struct data> *DataNascimento = new AVL<struct data>();
+    AVL<unsigned long int> *CPF = new AVL<unsigned long int>;
+    CPF->add((node->dado), &fulano);
+    AVL<string> *Nome = new AVL<string>;
+    AVL<struct data> *DataNascimento = new AVL<struct data>;
 
     vec2tree(pessoa2vec(2), CPF, Nome, DataNascimento);
 
@@ -42,4 +42,9 @@ int main(){
         Nome->preOrder();
     cout << "\nData de nascimento:\n";
         DataNascimento->preOrder();
+
+    //destruindo as árvores
+    delete CPF;
+    delete Nome;
+    delete DataNascimento;
 }
