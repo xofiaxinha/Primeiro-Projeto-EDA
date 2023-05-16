@@ -52,6 +52,12 @@ struct data{
         os << std::setfill('0') << std::setw(2) << d.mes << "/" << std::setfill('0') << std::setw(2) << d.dia << "/" << d.ano;
         return os;
     }
+    bool operator==(const data& d){
+        if(this->ano == d.ano && this->mes == d.mes && this->dia == d.dia){
+            return true;
+        }
+        return false;
+    }
 };
 
 class Pessoa{
@@ -60,39 +66,45 @@ class Pessoa{
         std::string nome;
         std::string sobrenome;
         struct data dataNascimento;
+        std::string lugarNascimento;
     public:
-        Pessoa(unsigned long int CPF, std::string nome, std::string sobrenome, std::string dataNascimento);
+        Pessoa(unsigned long int CPF, std::string nome, std::string sobrenome, std::string dataNascimento, std::string lugarNascimento);
         ~Pessoa();
         unsigned long int getCPF();
         std::string getNome();
         std::string getSobrenome();
         struct data getDataNascimento();
+        std::string getLugarNascimento();
+        void print();
 };
 
 template<typename T>
 struct Node{
-    T dado;
-    Node* left;
-    Node* right;
-    int height;
-    int numPessoas;
-    Pessoa *pessoa; //ponteiro para o objeto que terá os dados da pessoa que possuir
-                    //os dados que serão inseridos na árvore
-    Node(){
-        //dado = nullptr;
-        left = nullptr;
-        right = nullptr;
-        height = 0;
-        pessoa = nullptr;
-        numPessoas = 0;
-    }
-    Node(T dado, Pessoa *pessoa){
-        this->dado = dado;
-        this->pessoa = pessoa;
-        left = nullptr;
-        right = nullptr;
-        height = 1;
-        numPessoas = 1;
-    }
+    private:
+        T dado;
+        Node* left;
+        Node* right;
+        int height;
+        int numPessoas;
+        Pessoa *pessoa; //ponteiro para o objeto que terá os dados da pessoa que possuir
+                        //os dados que serão inseridos na árvore
+    public:
+        Node(T dado, Pessoa *pessoa){
+            this->dado = dado;
+            this->pessoa = pessoa;
+            left = nullptr;
+            right = nullptr;
+            height = 1;
+            numPessoas = 1;
+        }
+        T getDado(){
+            return dado;
+        }
+        Pessoa *getPessoa(){
+            return pessoa;
+        }
+        int getNumPessoas(){
+            return numPessoas;
+        }
 };
 #endif
