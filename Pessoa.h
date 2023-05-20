@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <vector>
 struct data{
     int dia;
     int mes;
@@ -87,17 +88,15 @@ struct Node{
         T dado;
         Node* left;
         Node* right;
-        int numPessoas;
-        Pessoa *pessoa; //ponteiro para o objeto que terá os dados da pessoa que possuir
+        std::vector<Pessoa*> pessoas; //ponteiro para o objeto que terá os dados da pessoa que possuir
                         //os dados que serão inseridos na árvore
         int height;
         Node(T dado, Pessoa *pessoa){
             this->dado = dado;
-            this->pessoa = pessoa;
+            this->pessoas.push_back(pessoa);
             left = nullptr;
             right = nullptr;
             height = 1;
-            numPessoas = 1;
         }
 };
 #endif

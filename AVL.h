@@ -10,7 +10,7 @@
 template<typename T>
 class AVL{
     private:
-        struct Node<T> *root; //📍 raíz
+        struct Node<T> *root{nullptr}; //📍 raíz
         int height(struct Node<T> *N); //📍 função que retorna a altura
         struct Node<T> *add(Node<T>* node, T dado, Pessoa *pessoa); //📍 função recursiva que adiciona um nó
         struct Node<T> *rotacaoDireita(struct Node<T> *y); //função que faz a rotação para a direita
@@ -134,6 +134,9 @@ template<typename T>
 void AVL<T>::preOrder(struct Node<T> *node){
     if(node == nullptr) return;
     std::cout << node->dado << " ";
+    for(int i=0; i<node->pessoas.size(); i++){
+        node->pessoas[i]->print();
+    }
     preOrder(node->left);
     preOrder(node->right);
 }
@@ -193,8 +196,8 @@ T AVL<T>::max(struct Node<T> *node){
 }
 
 //funções auxiliares
-std::vector<Pessoa> pessoa2vec();
-void vec2tree(std::vector<Pessoa> v, AVL<unsigned long int> *CPF, AVL<std::string> *nome, AVL<struct data> *dataNascimento);
+//std::vector<Pessoa*> pessoa2vec();
+void vec2tree(AVL<unsigned long int> *CPF, AVL<std::string> *nome, AVL<struct data> *dataNascimento);
 template<typename T>
 struct Node<T> *repeatedNode(struct Node<T> *node, Pessoa *pessoa);
 void buscaCPF(AVL<unsigned long int> *CPF);
