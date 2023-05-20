@@ -15,7 +15,7 @@ class AVL{
         struct Node<T> *add(Node<T>* node, T dado, Pessoa *pessoa); //📍 função recursiva que adiciona um nó
         struct Node<T> *rotacaoDireita(struct Node<T> *y); //função que faz a rotação para a direita
         struct Node<T> *rotacaoEsquerda(struct Node<T> *x); //função que faz a rotação para a esquerda
-        struct Node<T> *fixup(struct Node<T> *node);//📍 função que faz o balanceamento
+        struct Node<T> *fixup(struct Node<T> *node, T dado);//📍 função que faz o balanceamento
         int balance(Node<T> *N);//📍 função auxiliar que retorna o fator de balanceamento
         void preOrder(struct Node<T> *node); //📍 função recursiva que faz o percurso pré-ordem
         Node<T> *clear(Node<T> *node); //📍 função recursiva que limpa a árvore
@@ -23,8 +23,8 @@ class AVL{
         //TODO: implementar as funções abaixo
         bool isThere(struct Node<T> *node, T dado); //📍 função recursiva que verifica se um dado existe na árvore
         struct Node<T> *search(struct Node<T> *node, T dado); //📍 função recursiva que retorna um nó buscado
-        int min(struct Node<T> *node); //📍 função recursiva que retorna o menor valor
-        int max(struct Node<T> *node);  //📍 função recursiva que retorna o maior valor
+        T min(struct Node<T> *node); //📍 função recursiva que retorna o menor valor
+        T max(struct Node<T> *node);  //📍 função recursiva que retorna o maior valor
     public:
         AVL();
         ~AVL();
@@ -37,11 +37,11 @@ class AVL{
         //Função que retorna o menor valor na árvore
 
         //TODO: implementar as funções abaixo
-        int min();
+        T min();
         //Função que retorna o maior valor na árvore
-        int max();
+        T max();
         //Função que retorna um dado existente na árvore
-        int search(T dado);
+        T search(T dado);
 };
 
 //funções privadas:
@@ -53,68 +53,73 @@ int AVL<T>::height(struct Node<T> *N){
 }
 
 template<typename T>
+int AVL<T>::balance(struct Node<T> *N){
+    return height(N->right) - height(N->left);
+}
+
+template<typename T>
 struct Node<T> *AVL<T>::add(Node<T>* node, T dado, Pessoa *pessoa){
     if(node == nullptr) return new Node<T>(dado, pessoa);
 
     if(dado == node->dado){
         repeatedNode(node, pessoa);
-    };
-    if(dado < node->dado) node->left = add(node->left, dado, pessoa);
-    else node->right = add(node->right, dado, pessoa);
-
-    node = fixup(node);
+    }
+    if(dado < node->dado) {
+        node->left = add(node->left, dado, pessoa);}
+    else {
+        node->right = add(node->right, dado, pessoa);
+    }
+    //std::cout << "Passou pelo add\n";
+    node = fixup(node, dado);
+    //std::cout << "Passou pelo fixup\n";
     return node;
 }
 
 template<typename T>
-struct Node<T> *AVL<T>::rotacaoDireita(struct Node<T> *y){
-    struct Node<T> *x = y->left;
-    y->left = x->right;
-    x->right = y;
-    y->height = std::max(height(y->left), height(y->right))+1;
-    x->height = std::max(height(x->left), height(x->right))+1;
-    return x;
+struct Node<T> *AVL<T>::rotacaoDireita(struct Node<T> *p){
+    Node<T> *u = p->left;
+    p->left = u->right;
+    u->right = p;
+    p->height = std::max(height(p->left), height(p->right)) + 1;
+    u->height = std::max(height(u->left), height(u->right)) + 1;
+    return u;
 }
 
 template<typename T>
-struct Node<T> *AVL<T>::rotacaoEsquerda(struct Node<T> *x){
-    struct Node<T> *y = x->right;
-    x->right = y->left;
-    y->left = x;
-    x->height = std::max(height(x->left), height(x->right))+1;
-    y->height = std::max(height(y->left), height(y->right))+1;
-    return y;
+struct Node<T> *AVL<T>::rotacaoEsquerda(struct Node<T> *p){
+    Node<T> *u = p->right;
+    p->right = u->left;
+    u->left = p;
+    p->height = std::max(height(p->left), height(p->right)) + 1;
+    u->height = std::max(height(u->left), height(u->right)) + 1;
+    return u;
 }
 
 template<typename T>
-struct Node<T> *AVL<T>::fixup(struct Node<T> *node){
-    node->height = 1 + std::max(height(node->left), height(node->right));
+struct Node<T> *AVL<T>::fixup(struct Node<T> *node, T dado){
+    node->height = std::max(height(node->left), height(node->right)) + 1;
     int bal = balance(node);
-    if(bal >= -1 && bal <= 1){
-        return node;
-    }
-    if(bal < -1){
-        if(node->dado<node->left->dado) node = rotacaoDireita(node);
-        else{
+    //std::cout << "Balanço: " << bal << std::endl;
+    if(bal > -2 && bal < 2) return node;
+
+    //rotações pela direita
+    if(bal < -1){ //se o balanço for -2
+        if(dado < node->left->dado) node = rotacaoDireita(node);
+        else if(dado > node->left->dado){
             node->left = rotacaoEsquerda(node->left);
             node = rotacaoDireita(node);
         }
     }
-    else{
-        if(node->dado>node->right->dado) node = rotacaoEsquerda(node);
-        else{
+
+    //rotações pela esquerda
+    if(bal > 1){ //se o balanço for 2
+        if(dado > node->right->dado) node = rotacaoEsquerda(node);
+        else if(dado < node->right->dado){
             node->right = rotacaoDireita(node->right);
             node = rotacaoEsquerda(node);
         }
     }
     return node;
-}
-
-template<typename T>
-int AVL<T>::balance(struct Node<T> *N){
-    if (N == nullptr)
-        return 0;
-    return height(N->left) - height(N->right);
 }
 
 template<typename T>
@@ -131,6 +136,13 @@ void AVL<T>::preOrder(struct Node<T> *node){
     std::cout << node->dado << " ";
     preOrder(node->left);
     preOrder(node->right);
+}
+template<typename T>
+struct Node<T> *AVL<T>::search(struct Node<T> *node, T dado){
+    if(node == nullptr) return nullptr;
+    if(node->dado == dado) return node;
+    if(dado < node->dado) return search(node->left, dado);
+    return search(node->right, dado);
 }
 
 // funções públicas:
@@ -152,7 +164,7 @@ void AVL<T>::clear(){
 }
 template<typename T>
 void AVL<T>::add(T dado, Pessoa *pessoa){
-    root = add(root, dado, pessoa);
+    root = add(this->root, dado, pessoa);
 }
 
 template<typename T>
@@ -162,27 +174,26 @@ bool AVL<T>::isThere(struct Node<T> *node, T dado){
 }
 
 template<typename T>
-struct Node<T> *AVL<T>::search(struct Node<T> *node, T dado){
-    if(node == nullptr) return nullptr;
-    if(node->dado == dado) return node;
-    if(dado < node->dado) return search(node->left, dado);
-    return search(node->right, dado);
+T AVL<T>::search(T dado){
+    struct Node<T> *node = search(root, dado);
+    if(node == nullptr) throw std::runtime_error("Erro: dado não encontrado");
+    return node->dado;
 }
 
 template<typename T>
-int AVL<T>::min(struct Node<T> *node){
+T AVL<T>::min(struct Node<T> *node){
     while(node->left != nullptr) node = node->left;
     return node->dado;
 }
 
 template<typename T>
-int AVL<T>::max(struct Node<T> *node){
+T AVL<T>::max(struct Node<T> *node){
     while(node->right != nullptr) node = node->right;
     return node->dado;
 }
 
 //funções auxiliares
-std::vector<Pessoa> pessoa2vec(int n);
+std::vector<Pessoa> pessoa2vec();
 void vec2tree(std::vector<Pessoa> v, AVL<unsigned long int> *CPF, AVL<std::string> *nome, AVL<struct data> *dataNascimento);
 template<typename T>
 struct Node<T> *repeatedNode(struct Node<T> *node, Pessoa *pessoa);

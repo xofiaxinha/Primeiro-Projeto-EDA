@@ -15,9 +15,13 @@ struct data{
         ano = 0;
     } //default
     data(std::string data){
-        dia = std::stoi(data.substr(3,2));
-        mes = std::stoi(data.substr(0,2));
-        ano = std::stoi(data.substr(6,4));
+        int barPos = data.find("/");
+        this->mes = std::stoi(data.substr(0, barPos));
+        data = data.substr(barPos + 1);
+        barPos = data.find("/");
+        this->dia = std::stoi(data.substr(0, barPos));
+        data = data.substr(barPos + 1);
+        this->ano = std::stoi(data);
     }//data no formato mm/dd/aaaa
     //sobrecarga do operador <
     bool operator<(const data& d){
@@ -80,15 +84,13 @@ class Pessoa{
 
 template<typename T>
 struct Node{
-    private:
         T dado;
         Node* left;
         Node* right;
-        int height;
         int numPessoas;
         Pessoa *pessoa; //ponteiro para o objeto que terá os dados da pessoa que possuir
                         //os dados que serão inseridos na árvore
-    public:
+        int height;
         Node(T dado, Pessoa *pessoa){
             this->dado = dado;
             this->pessoa = pessoa;
@@ -96,15 +98,6 @@ struct Node{
             right = nullptr;
             height = 1;
             numPessoas = 1;
-        }
-        T getDado(){
-            return dado;
-        }
-        Pessoa *getPessoa(){
-            return pessoa;
-        }
-        int getNumPessoas(){
-            return numPessoas;
         }
 };
 #endif

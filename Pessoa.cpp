@@ -12,24 +12,25 @@ Pessoa::Pessoa(unsigned long int CPF, std::string nome, std::string sobrenome,
 }
 Pessoa::~Pessoa(){}
 unsigned long int Pessoa::getCPF(){
-    return this->CPF;
+    return CPF;
 }
 std::string Pessoa::getNome(){
-    return this->nome;
+    return nome;
 }
 std::string Pessoa::getSobrenome(){
-    return this->sobrenome;
+    return sobrenome;
 }
 struct data Pessoa::getDataNascimento(){
-    return this->dataNascimento;
+    return dataNascimento;
 }
 std::string Pessoa::getLugarNascimento(){
-    return this->lugarNascimento;
+    return lugarNascimento;
 }
 
 
 void Pessoa::print(){
-    std::cout << "CPF: " << getSobrenome() << std::endl;
+    std::cout << "CPF: " << getCPF() << std::endl;
     std::cout << "Nome: " << getNome() << " " << getSobrenome() << std::endl;
     std::cout << "Data de Nascimento: " << getDataNascimento() << std::endl;
+    std::cout << "Lugar de Nascimento: " << getLugarNascimento() << std::endl;
 }
