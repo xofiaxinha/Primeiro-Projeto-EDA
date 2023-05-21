@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <stack>
 #include "Pessoa.h"
 
 template<typename T>
@@ -17,7 +18,7 @@ class AVL{
         struct Node<T> *rotacaoEsquerda(struct Node<T> *x); //função que faz a rotação para a esquerda
         struct Node<T> *fixup(struct Node<T> *node, T dado);//📍 função que faz o balanceamento
         int balance(Node<T> *N);//📍 função auxiliar que retorna o fator de balanceamento
-        void preOrder(struct Node<T> *node); //📍 função recursiva que faz o percurso pré-ordem
+        void inOrder(struct Node<T> *node); //📍 função recursiva que faz o percurso pré-ordem
         Node<T> *clear(Node<T> *node); //📍 função recursiva que limpa a árvore
         bool isThere(struct Node<T> *node, T dado); //📍 função recursiva que verifica se um dado existe na árvore
         struct Node<T> *search(struct Node<T> *node, T dado); //📍 função recursiva que retorna um nó buscado
@@ -29,7 +30,7 @@ class AVL{
         //Função que adiciona um nó na árvore
         void add(T dado, Pessoa *pessoa);
         //Função que exibe os dados em pré-ordem
-        void preOrder();
+        void inOrder();
         //Função que limpa a árvore
         void clear();
         //Função que retorna o menor valor na árvore
@@ -42,6 +43,8 @@ class AVL{
         bool isThere(T dado);
         //Função que imprime um nó específico
         void printNode(T dado);
+        //Função que mostra um intervalo de dados
+        void intervalo(T dado1, T dado2);
 };
 
 //funções privadas:
@@ -133,14 +136,15 @@ Node<T> *AVL<T>::clear(Node<T> *node){
     return nullptr;
 }
 template<typename T>
-void AVL<T>::preOrder(struct Node<T> *node){
+void AVL<T>::inOrder(struct Node<T> *node){
     if(node == nullptr) return;
-    std::cout << node->dado << " ";
-    for(int i=0; i<node->pessoas.size(); i++){
+    inOrder(node->left);
+    std::cout << "\nDado: " << node->dado << "\n";
+    for(int i = 0; i < node->pessoas.size(); i++){
         node->pessoas[i]->print();
+        std::cout << "\n";
     }
-    preOrder(node->left);
-    preOrder(node->right);
+    inOrder(node->right);
 }
 template<typename T>
 struct Node<T> *AVL<T>::search(struct Node<T> *node, T dado){
@@ -165,8 +169,8 @@ AVL<T>::~AVL(){
     root = clear(root);
 }
 template<typename T>
-void AVL<T>::preOrder(){
-    preOrder(root);
+void AVL<T>::inOrder(){
+    inOrder(root);
 }
 template<typename T>
 void AVL<T>::clear(){
@@ -213,7 +217,27 @@ void AVL<T>::printNode(T dado){
         std::cout << "\n";
     }
 }
-
+template<typename T>
+void AVL<T>::intervalo(T dado1, T dado2){
+    std::stack<struct Node<T>*> s;
+    struct Node<T> *node = root;
+    while(node != nullptr || s.empty() == false){
+        while(node != nullptr){
+            s.push(node);
+            node = node->left;
+        }
+        node = s.top();
+        s.pop();
+        if(node->dado >= dado1 && node->dado <= dado2){
+            std::cout << node->dado << "\n";
+            for(int i=0; i<node->pessoas.size(); i++){
+                node->pessoas[i]->print();
+                std::cout << "\n";
+            }
+        }
+        node = node->right;
+    }
+}
 //funções auxiliares
 std::vector<Pessoa*> pessoa2vec();
 void vec2tree(std::vector<Pessoa*> v, AVL<unsigned long long int> *CPF, AVL<std::string> *nome, AVL<struct data> *dataNascimento);

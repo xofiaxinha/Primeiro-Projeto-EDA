@@ -32,7 +32,7 @@ unsigned long long int stringCPF(string CPF){
     }
     return cpf;
 }
-std::vector<Pessoa*> pessoa2vec(){
+vector<Pessoa*> pessoa2vec(){
     vector<Pessoa*> v;
     ifstream data;
 
@@ -40,8 +40,7 @@ std::vector<Pessoa*> pessoa2vec(){
     string line;
     if(!data.is_open()) throw runtime_error("Não foi possível ler o arquivo.");
     getline(data, line); //leitura da primeira linha do arquivo, que não será inclusa.
-    for(int i=0; i<10; i++){
-        getline(data, line);
+    while(getline(data, line)){
         stringstream ss(line);
         string CPF, nome, sobrenome, dataNascimento, lugarNascimento;
         getline(ss, CPF, ',');
@@ -49,9 +48,7 @@ std::vector<Pessoa*> pessoa2vec(){
         getline(ss, sobrenome, ',');
         getline(ss, dataNascimento, ',');
         getline(ss, lugarNascimento, ',');
-        cout << "CPF: " << CPF << '\n';
         unsigned long long int cpf = stringCPF(CPF);
-        cout << "CPF2: " << cpf << '\n';
         Pessoa *pessoa = new Pessoa(cpf, nome, sobrenome, dataNascimento, lugarNascimento);
         v.push_back(pessoa);
     }
@@ -97,7 +94,12 @@ void buscaString(AVL<string> *nome){
 }
 void intervaloData(AVL<struct data> *dataNascimento){
     string data1, data2;
-    cout << "Digite o intervalo de datas que deseja buscar: ";
-    cin >> data1 >> data2;
-    
+    cout << "Digite o intervalo de datas que deseja buscar\n";
+    cout << "Data inicial: ";
+    getline(cin, data1);
+    cout << "Data final: ";
+    getline(cin, data2);
+    struct data d1(data1), d2(data2);
+    cout << "Pessoas presentes no intervalo:\n";
+    dataNascimento->intervalo(d1, d2);
 }

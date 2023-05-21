@@ -53,6 +53,18 @@ struct data{
         }
         return false;
     }
+    bool operator >=(const data& d){
+        if(*this > d || *this == d){
+            return true;
+        }
+        return false;
+    }
+    bool operator <=(const data& d){
+        if(*this < d || *this == d){
+            return true;
+        }
+        return false;
+    }
     friend std::ostream& operator<<(std::ostream& os, const data& d){
         os << std::setfill('0') << std::setw(2) << d.mes << "/" << std::setfill('0') << std::setw(2) << d.dia << "/" << d.ano;
         return os;
