@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 
-Pessoa::Pessoa(unsigned long int CPF, std::string nome, std::string sobrenome, 
+Pessoa::Pessoa(unsigned long long int CPF, std::string nome, std::string sobrenome, 
                 std::string dataNascimento, std::string lugarNascimento){
     this->CPF = CPF;
     this->nome = nome;
@@ -11,7 +11,7 @@ Pessoa::Pessoa(unsigned long int CPF, std::string nome, std::string sobrenome,
     this->lugarNascimento = lugarNascimento;
 }
 Pessoa::~Pessoa(){}
-unsigned long int Pessoa::getCPF(){
+unsigned long long int Pessoa::getCPF(){
     return CPF;
 }
 std::string Pessoa::getNome(){
@@ -26,7 +26,6 @@ struct data Pessoa::getDataNascimento(){
 std::string Pessoa::getLugarNascimento(){
     return lugarNascimento;
 }
-
 
 void Pessoa::print(){
     std::cout << "CPF: " << getCPF() << std::endl;

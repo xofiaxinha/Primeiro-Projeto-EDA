@@ -19,8 +19,6 @@ class AVL{
         int balance(Node<T> *N);//📍 função auxiliar que retorna o fator de balanceamento
         void preOrder(struct Node<T> *node); //📍 função recursiva que faz o percurso pré-ordem
         Node<T> *clear(Node<T> *node); //📍 função recursiva que limpa a árvore
-        
-        //TODO: implementar as funções abaixo
         bool isThere(struct Node<T> *node, T dado); //📍 função recursiva que verifica se um dado existe na árvore
         struct Node<T> *search(struct Node<T> *node, T dado); //📍 função recursiva que retorna um nó buscado
         T min(struct Node<T> *node); //📍 função recursiva que retorna o menor valor
@@ -35,13 +33,15 @@ class AVL{
         //Função que limpa a árvore
         void clear();
         //Função que retorna o menor valor na árvore
-
-        //TODO: implementar as funções abaixo
         T min();
         //Função que retorna o maior valor na árvore
         T max();
         //Função que retorna um dado existente na árvore
         T search(T dado);
+        //Função que verifica se um dado existe na árvore
+        bool isThere(T dado);
+        //Função que imprime um nó específico
+        void printNode(T dado);
 };
 
 //funções privadas:
@@ -59,17 +59,19 @@ int AVL<T>::balance(struct Node<T> *N){
 
 template<typename T>
 struct Node<T> *AVL<T>::add(Node<T>* node, T dado, Pessoa *pessoa){
-    if(node == nullptr) return new Node<T>(dado, pessoa);
+    //std::cout << "Passou pelo add\n";
+    if(node == nullptr) {
+        return new Node<T>(dado, pessoa);}
 
     if(dado == node->dado){
         repeatedNode(node, pessoa);
+        return node;
     }
-    if(dado < node->dado) {
+    else if(dado < node->dado) {
         node->left = add(node->left, dado, pessoa);}
     else {
         node->right = add(node->right, dado, pessoa);
     }
-    //std::cout << "Passou pelo add\n";
     node = fixup(node, dado);
     //std::cout << "Passou pelo fixup\n";
     return node;
@@ -147,6 +149,11 @@ struct Node<T> *AVL<T>::search(struct Node<T> *node, T dado){
     if(dado < node->dado) return search(node->left, dado);
     return search(node->right, dado);
 }
+template<typename T>
+bool AVL<T>::isThere(struct Node<T> *node, T dado){
+    if(search(node, dado) == nullptr) return false;
+    return true;
+}
 
 // funções públicas:
 template<typename T>
@@ -167,20 +174,13 @@ void AVL<T>::clear(){
 }
 template<typename T>
 void AVL<T>::add(T dado, Pessoa *pessoa){
-    root = add(this->root, dado, pessoa);
-}
-
-template<typename T>
-bool AVL<T>::isThere(struct Node<T> *node, T dado){
-    if(search(node, dado) == nullptr) return false;
-    return true;
+    root = add(root, dado, pessoa);
 }
 
 template<typename T>
 T AVL<T>::search(T dado){
-    struct Node<T> *node = search(root, dado);
-    if(node == nullptr) throw std::runtime_error("Erro: dado não encontrado");
-    return node->dado;
+    if(isThere(root, dado) == false) throw std::runtime_error("Erro: elemento não encontrado");
+    return search(root, dado)->dado;
 }
 
 template<typename T>
@@ -195,17 +195,36 @@ T AVL<T>::max(struct Node<T> *node){
     return node->dado;
 }
 
+template<typename T>
+bool AVL<T>::isThere(T dado){
+    return isThere(root, dado);
+}
+
+template<typename T>
+void AVL<T>::printNode(T dado){
+    struct Node<T> *node = search(root, dado);
+    if(node == nullptr){
+        std::cout << "Elemento não encontrado\n";
+        return;
+    }
+    std::cout << node->dado << "\n";
+    for(int i=0; i<node->pessoas.size(); i++){
+        node->pessoas[i]->print();
+        std::cout << "\n";
+    }
+}
+
 //funções auxiliares
-//std::vector<Pessoa*> pessoa2vec();
-void vec2tree(AVL<unsigned long int> *CPF, AVL<std::string> *nome, AVL<struct data> *dataNascimento);
+std::vector<Pessoa*> pessoa2vec();
+void vec2tree(std::vector<Pessoa*> v, AVL<unsigned long long int> *CPF, AVL<std::string> *nome, AVL<struct data> *dataNascimento);
 template<typename T>
 struct Node<T> *repeatedNode(struct Node<T> *node, Pessoa *pessoa);
-void buscaCPF(AVL<unsigned long int> *CPF);
+void buscaCPF(AVL<unsigned long long int> *CPF);
 void buscaString(AVL<std::string> *nome);
 void intervaloData(AVL<struct data> *dataNascimento);
 
 
-template class AVL<unsigned long int>;
+template class AVL<unsigned long long int>;
 template class AVL<std::string>;
 template class AVL<struct data>;
 #endif

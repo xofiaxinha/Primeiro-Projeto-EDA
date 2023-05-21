@@ -67,15 +67,15 @@ struct data{
 
 class Pessoa{
     private:
-        unsigned long int CPF;
+        unsigned long long int CPF;
         std::string nome;
         std::string sobrenome;
         struct data dataNascimento;
         std::string lugarNascimento;
     public:
-        Pessoa(unsigned long int CPF, std::string nome, std::string sobrenome, std::string dataNascimento, std::string lugarNascimento);
+        Pessoa(unsigned long long int CPF, std::string nome, std::string sobrenome, std::string dataNascimento, std::string lugarNascimento);
         ~Pessoa();
-        unsigned long int getCPF();
+        unsigned long long int getCPF();
         std::string getNome();
         std::string getSobrenome();
         struct data getDataNascimento();
@@ -88,8 +88,7 @@ struct Node{
         T dado;
         Node* left;
         Node* right;
-        std::vector<Pessoa*> pessoas; //ponteiro para o objeto que terá os dados da pessoa que possuir
-                        //os dados que serão inseridos na árvore
+        std::vector<Pessoa*> pessoas; //vetor de ponteiros para pessoas com o mesmo dado
         int height;
         Node(T dado, Pessoa *pessoa){
             this->dado = dado;
@@ -97,6 +96,9 @@ struct Node{
             left = nullptr;
             right = nullptr;
             height = 1;
+        }
+        void print(){
+            std::cout << dado << " ";
         }
 };
 #endif
