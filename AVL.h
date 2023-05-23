@@ -27,6 +27,7 @@ class AVL{
     public:
         AVL();
         ~AVL();
+        Node<T>* getRoot();
         //Função que adiciona um nó na árvore
         void add(T dado, Pessoa *pessoa);
         //Função que exibe os dados em pré-ordem
@@ -167,6 +168,10 @@ AVL<T>::AVL(){
 template<typename T>
 AVL<T>::~AVL(){
     root = clear(root);
+}
+template<typename T>
+Node<T>* AVL<T>::getRoot(){
+    return root;
 }
 template<typename T>
 void AVL<T>::inOrder(){

@@ -83,14 +83,27 @@ void buscaCPF(AVL<unsigned long long int> *CPF){
     else cout << "CPF não encontrado.\n";
 }
 void buscaString(AVL<string> *nome){
+    //lê substring a ser buscada
     string nomePessoa;
     cout << "Digite o nome que deseja buscar: ";
     getline(cin, nomePessoa);
-    if(nome->isThere(nomePessoa)){
-        cout << "Nome encontrado!\n";
-        nome->printNode(nomePessoa);
+    vector<Pessoa*> v;
+
+    //busca a substring
+    Node<string> *aux = nome->getRoot();
+    while(aux != NULL){
+        if(aux->dado.substr(0, (int)nomePessoa.size()) == nomePessoa){
+            for(int i=0; i<(int)aux->pessoas.size(); i++){
+                v.push_back(aux->pessoas[i]);
+            }
+        }
+        if(aux->dado.substr(0, (int)nomePessoa.size()) < nomePessoa) aux = aux->right;
+        else aux = aux->left;
     }
-    else cout << "Nome não encontrado.\n";
+    cout << "Pessoas encontradas:\n";
+    for(int i=0; i<(int)v.size(); i++){
+        v[i]->print();
+    }
 }
 void intervaloData(AVL<struct data> *dataNascimento){
     string data1, data2;

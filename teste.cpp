@@ -11,6 +11,6 @@ int main(){
     AVL<string> *nome = new AVL<string>;
     AVL<struct data> *dataNascimento = new AVL<struct data>;
     vec2tree(pessoa2vec(), CPF, nome, dataNascimento);
-    cout << "Testando intervalo de datas\n";
-    intervaloData(dataNascimento);
+    cout << "Testando busca de nome\n";
+    buscaString(nome);
 }
