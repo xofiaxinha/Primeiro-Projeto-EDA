@@ -11,7 +11,7 @@
 template<typename T>
 class AVL{
     private:
-        struct Node<T> *root{nullptr}; //📍 raíz
+        struct Node<T> *root; //📍 raíz
         int height(struct Node<T> *N); //📍 função que retorna a altura
         struct Node<T> *add(Node<T>* node, T dado, Pessoa *pessoa); //📍 função recursiva que adiciona um nó
         struct Node<T> *rotacaoDireita(struct Node<T> *y); //função que faz a rotação para a direita
@@ -248,10 +248,14 @@ std::vector<Pessoa*> pessoa2vec();
 void vec2tree(std::vector<Pessoa*> v, AVL<unsigned long long int> *CPF, AVL<std::string> *nome, AVL<struct data> *dataNascimento);
 template<typename T>
 struct Node<T> *repeatedNode(struct Node<T> *node, Pessoa *pessoa);
+
+//funções da main
 void buscaCPF(AVL<unsigned long long int> *CPF);
 void buscaString(AVL<std::string> *nome);
 void intervaloData(AVL<struct data> *dataNascimento);
-
+void menu();
+void adicionarPessoa(AVL<unsigned long long int> *CPF, AVL<std::string> *nome, AVL<struct data> *dataNasc);
+void imprimirArvores(AVL<unsigned long long int> *CPF, AVL<std::string> *nome, AVL<struct data> *dataNasc);
 
 template class AVL<unsigned long long int>;
 template class AVL<std::string>;
