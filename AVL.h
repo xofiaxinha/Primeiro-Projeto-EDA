@@ -133,6 +133,7 @@ Node<T> *AVL<T>::clear(Node<T> *node){
     if(node == nullptr) return nullptr;
     node->left = clear(node->left);
     node->right = clear(node->right);
+    node->pessoas.clear();
     delete node;
     return nullptr;
 }
@@ -224,6 +225,11 @@ void AVL<T>::printNode(T dado){
 }
 template<typename T>
 void AVL<T>::intervalo(T dado1, T dado2){
+    if(dado2 < dado1){
+        T aux = dado1;
+        dado1 = dado2;
+        dado2 = aux;
+    }
     std::stack<struct Node<T>*> s;
     struct Node<T> *node = root;
     while(node != nullptr || s.empty() == false){
@@ -256,6 +262,7 @@ void intervaloData(AVL<struct data> *dataNascimento);
 void menu();
 void adicionarPessoa(AVL<unsigned long long int> *CPF, AVL<std::string> *nome, AVL<struct data> *dataNasc);
 void imprimirArvores(AVL<unsigned long long int> *CPF, AVL<std::string> *nome, AVL<struct data> *dataNasc);
+void pause();
 
 template class AVL<unsigned long long int>;
 template class AVL<std::string>;

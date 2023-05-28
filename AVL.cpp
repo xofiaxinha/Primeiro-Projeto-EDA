@@ -80,6 +80,30 @@ bool CPFvalido(string CPF){
     }
     return true;
 }
+bool dataValida(string data){
+    if(data.size()!=10||data.size()!=9||data.size()!=8) return false;
+    int quantBarra = 0;
+    for(int i=0; i<(int)data.size(); i++){
+        if(data[i] == '/') quantBarra++;
+        if(data[i] < '0' || data[i] > '9') return false;
+    } //checando se ha letras ou caracteres especiais na data
+    if(quantBarra != 2) return false; //checando se a data tem 2 barras
+    
+    int dia, mes, ano;
+    int barPos = data.find("/");
+    mes = stoi(data.substr(0, barPos));
+    data = data.substr(barPos + 1);
+    barPos = data.find("/");
+    dia = stoi(data.substr(0, barPos));
+    data = data.substr(barPos + 1);
+    ano = stoi(data);
+
+    if(dia < 1 || dia > 31) return false;
+    if(mes < 1 || mes > 12) return false;
+    if(ano < 0) return false;
+
+    return true;
+}
 void buscaCPF(AVL<unsigned long long int> *CPF){
     cin.ignore();
     unsigned long long int cpf;
@@ -126,6 +150,7 @@ void buscaString(AVL<string> *nome){
     cout << "Pessoas encontradas:\n";
     for(int i=0; i<(int)v.size(); i++){
         v[i]->print();
+        cout << '\n';
     }
 }
 void intervaloData(AVL<struct data> *dataNascimento){
@@ -134,8 +159,16 @@ void intervaloData(AVL<struct data> *dataNascimento){
     cout << "Digite o intervalo de datas que deseja buscar\n";
     cout << "Data inicial: ";
     getline(cin, data1);
+    if(!dataValida(data1)){
+        cout << "Data inválida.\n";
+        return;
+    }
     cout << "Data final: ";
     getline(cin, data2);
+    if(!dataValida(data2)){
+        cout << "Data inválida.\n";
+        return;
+    }
     struct data d1(data1), d2(data2);
     cout << "Pessoas presentes no intervalo:\n";
     dataNascimento->intervalo(d1, d2);
@@ -146,10 +179,9 @@ void menu(){
     cout << "1 - Busca por CPF\n";
     cout << "2 - Busca por nome\n";
     cout << "3 - Busca por intervalo de datas de nascimento\n";
-    cout << "Outras operações:\n";
-    cout << "4 - Imprimir árvore\n";
+    cout << "Outras operaçoes:\n";
+    cout << "4 - Imprimir arvore\n";
     cout << "5 - Adicionar pessoa\n";
-    cout << "6 - *Remover pessoa\n";
     cout << "q - Sair\n";
 }
 void adicionarPessoa(AVL<unsigned long long int> *CPF, AVL<std::string> *nome, AVL<struct data> *dataNasc){
@@ -163,6 +195,10 @@ void adicionarPessoa(AVL<unsigned long long int> *CPF, AVL<std::string> *nome, A
     getline(cin, sobrenome);
     cout << "Data de nascimento: ";
     getline(cin, dataNascimento);
+    if(!dataValida(dataNascimento)){
+        cout << "Data inválida.\n";
+        return;
+    }
     cout << "Lugar de nascimento: ";
     getline(cin, lugarNascimento);
     cout << "CPF: ";
@@ -199,4 +235,9 @@ void imprimirArvores(AVL<unsigned long long int> *CPF, AVL<std::string> *nome, A
             cout << "Opção inválida.\n";
             break;
     }
+}
+void pause(){
+    cout << "Pressione enter para continuar...";
+    getchar();
+    system("cls");
 }
